@@ -1,0 +1,55 @@
+import sys
+from collections import deque
+
+container = deque()  # Using deque for a queue
+
+while True:
+    try:
+        num_queues = int(input("Enter how many queues you want to enter: "))
+        if num_queues > 0:
+            break
+        else:
+            continue
+    except ValueError:
+        continue
+
+for i in range(1, num_queues + 1):
+    queue = input(f"Enter Queue #{i}: ")
+    container.append(queue)
+
+# Handling display for the queue items
+def display_queues():
+    if len(container) > 1:
+        # Manually create the list of queues without slicing
+        result = ", ".join(list(container)[:-1]) + ", and " + container[-1]
+        print(f"You have queues of {result}.")
+    elif container:
+        result = container[0]
+        print(f"You have queue of {result}.")
+    else:
+        print("You do not have any item left in your queue.")
+        sys.exit()
+
+display_queues()
+
+# Function to ask for removal
+def ask_remove():
+    try:
+        remove = input("Click R to remove an item from the front: ")
+        if remove == "R":
+            if container:
+                container.popleft()  # Remove the front of the queue
+                if container:
+                    display_queues()  # Reuse the display function to show remaining queues
+                else:
+                    print("You do not have any item left in your queue.")
+                    sys.exit()
+            else:
+                print("You do not have a queue left.")
+                sys.exit()
+        return ask_remove()
+
+    except ValueError:
+        return
+
+ask_remove()
